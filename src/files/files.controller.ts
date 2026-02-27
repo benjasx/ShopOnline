@@ -1,7 +1,10 @@
 import {
   BadGatewayException,
   Controller,
+  Get,
+  Param,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -9,10 +12,20 @@ import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileFilter, fileNamer } from './helpers';
 import { diskStorage } from 'multer';
-
+import type { Response } from 'express';
+import { ok } from 'assert';
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
+
+  @Get('product/:imageName')
+  findProductImage(
+    @Res() res: Response,
+    @Param('imageName') imageName: string,
+  ) {
+    const path = this.filesService.getStaticProductImage(imageName);
+    res.sendFile(path);
+  }
 
   @Post('product')
   @UseInterceptors(
@@ -30,8 +43,9 @@ export class FilesController {
       throw new BadGatewayException('Make sure that the file is an image');
     }
 
-    return {
-      filename: file.originalname,
-    };
+    //const secureUrl = `${file.filename}`;
+    const secureUrl = `http://localhost:3000/api/files/product/93ed2f5c-c209-451d-a408-dbb606db4f16.png`;
+
+    return { secureUrl };
   }
 }

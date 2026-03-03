@@ -14,10 +14,10 @@
 docker-compose up -d
 ```
 
-6. Ejecutar el SEED
+6. Levantar: `yarn start:dev`
+
+7. Ejecutar el SEED
 
 ```
 http://localhost:3000/api/seed
 ```
-
-7. Levantar: `yarn start:dev`

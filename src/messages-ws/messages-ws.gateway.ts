@@ -17,6 +17,9 @@ export class MessagesWsGateway
   constructor(private readonly messagesWsService: MessagesWsService) {}
   handleConnection(client: Socket) {
     /* console.log('Cliente conectado:', client.id); */
+    const token = client.handshake.headers.autentication as string;
+    console.log({ token });
+
     this.messagesWsService.registerClient(client);
     this.wss.emit(
       'clients-update',
